@@ -1,0 +1,247 @@
+% ─────────────────────────────────────────────────────────────────────────────
+% IFT2015 — Travail pratique : Autocomplétion et structures de données
+% Document : Rapport (à compléter par les étudiants)
+% ─────────────────────────────────────────────────────────────────────────────
+
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{array}
+
+% ── Couleurs ──────────────────────────────────────────────────────────────────
+\definecolor{udemblue}{RGB}{0, 89, 171}
+\definecolor{codefill}{RGB}{248, 249, 250}
+\definecolor{codeframe}{RGB}{200, 210, 225}
+\definecolor{kwcolor}{RGB}{0, 0, 200}
+\definecolor{cmtcolor}{RGB}{80, 130, 80}
+\definecolor{strcolor}{RGB}{160, 0, 0}
+\definecolor{warnfill}{RGB}{255, 248, 230}
+\definecolor{warnline}{RGB}{200, 130, 0}
+
+% ── Mise en page ──────────────────────────────────────────────────────────────
+\geometry{a4paper, top=2.5cm, bottom=3cm, left=2.5cm, right=2.5cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+\setlist[itemize]{topsep=0.2em, partopsep=0pt, itemsep=0.3em, parsep=0pt}
+\setlist[enumerate]{topsep=0.2em, partopsep=0pt, itemsep=0.3em, parsep=0pt}
+
+% ── Titres ────────────────────────────────────────────────────────────────────
+\titleformat{\section}
+  {\large\bfseries\color{udemblue}}{}{0em}{}[\vspace{-4pt}\textcolor{udemblue}{\rule{\linewidth}{0.6pt}}]
+\titleformat{\subsection}{\normalsize\bfseries\color{black}}{}{0em}{}
+\titleformat{\subsubsection}{\small\bfseries\itshape\color{black}}{}{0em}{}
+
+% ── En-tête / pied de page ────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{udemblue}{IFT2015 — Rapport : Autocomplétion}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+
+% ── Hyperliens ────────────────────────────────────────────────────────────────
+\hypersetup{colorlinks=true, linkcolor=udemblue, urlcolor=udemblue, citecolor=udemblue}
+
+% ── Commandes utilitaires ─────────────────────────────────────────────────────
+\newcommand{\jclass}[1]{\texttt{#1}}
+\newcommand{\pts}[1]{\hfill\textbf{\small(#1~pts)}}
+\newcommand{\bigo}[1]{$\mathcal{O}(#1)$}
+
+% ── Boîte réponse ─────────────────────────────────────────────────────────────
+\newcommand{\answerspace}[1]{\vspace{#1}}
+
+% =============================================================================
+\begin{document}
+% =============================================================================
+
+% ─────────────────────────────────────────────────────────────────────────────
+% PAGE DE TITRE
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+
+  \textcolor{udemblue}{\rule{\linewidth}{2.5pt}}
+  \vspace{8pt}
+
+  {\Huge\bfseries Rapport}\\[6pt]
+  {\Large Autocomplétion et structures de données}
+
+  \vspace{6pt}
+  \textcolor{udemblue}{\rule{\linewidth}{2.5pt}}
+
+  \vspace{18mm}
+  {\Large Structures de données — IFT2015}
+
+  \vspace{28mm}
+  {\large Par\\[6pt]
+  Prénom1 Nom1\\
+  Prénom2 Nom2}
+
+  \vspace{22mm}
+  {\large Présenté à\\[6pt]
+  François Major}
+
+  \vspace{22mm}
+  {\large 7 avril 2026}
+
+  \vspace*{\fill}
+
+  % Logo UdeM (TikZ)
+  \tikzset{every picture/.style={line width=0.75pt}}
+  \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+    \draw [draw opacity=0][line width=3.75] (419.84,609.44) .. controls (419.84,609.44) and (419.84,609.44) .. (419.84,609.44) .. controls (419.84,605.88) and (422.19,602.99) .. (425.09,602.99) .. controls (427.99,602.99) and (430.33,605.88) .. (430.33,609.44) -- (425.09,609.44) -- cycle ; \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (419.84,609.44) .. controls (419.84,609.44) and (419.84,609.44) .. (419.84,609.44) .. controls (419.84,605.88) and (422.19,602.99) .. (425.09,602.99) .. controls (427.99,602.99) and (430.33,605.88) .. (430.33,609.44) ;
+    \draw [draw opacity=0][line width=3.75] (430.33,609.44) .. controls (430.33,609.44) and (430.33,609.44) .. (430.33,609.44) .. controls (430.33,605.88) and (432.68,602.99) .. (435.58,602.99) .. controls (438.47,602.99) and (440.82,605.88) .. (440.82,609.44) -- (435.58,609.44) -- cycle ; \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (430.33,609.44) .. controls (430.33,609.44) and (430.33,609.44) .. (430.33,609.44) .. controls (430.33,605.88) and (432.68,602.99) .. (435.58,602.99) .. controls (438.47,602.99) and (440.82,605.88) .. (440.82,609.44) ;
+    \draw [draw opacity=0][line width=3.75] (440.82,609.44) .. controls (440.82,609.44) and (440.82,609.44) .. (440.82,609.44) .. controls (440.82,605.88) and (443.17,602.99) .. (446.07,602.99) .. controls (448.96,602.99) and (451.31,605.88) .. (451.31,609.44) -- (446.07,609.44) -- cycle ; \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (440.82,609.44) .. controls (440.82,609.44) and (440.82,609.44) .. (440.82,609.44) .. controls (440.82,605.88) and (443.17,602.99) .. (446.07,602.99) .. controls (448.96,602.99) and (451.31,605.88) .. (451.31,609.44) ;
+    \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (419.84,608.9) -- (419.84,617.48) ;
+    \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (430.33,608.9) -- (430.33,617.48) ;
+    \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (440.82,608.9) -- (440.82,617.48) ;
+    \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (451.31,608.9) -- (451.31,617.48) ;
+    \draw [draw opacity=0][line width=3.75] (440.93,595.5) .. controls (440.93,595.5) and (440.93,595.5) .. (440.93,595.5) .. controls (440.93,599.06) and (438.59,601.95) .. (435.69,601.95) .. controls (432.79,601.95) and (430.44,599.06) .. (430.44,595.5) -- (435.69,595.5) -- cycle ; \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (440.93,595.5) .. controls (440.93,595.5) and (440.93,595.5) .. (440.93,595.5) .. controls (440.93,599.06) and (438.59,601.95) .. (435.69,601.95) .. controls (432.79,601.95) and (430.44,599.06) .. (430.44,595.5) ;
+    \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (430.45,578.24) -- (430.44,596.5) ;
+    \draw [color={rgb, 255:red, 0; green, 89; blue, 171} ,draw opacity=1][line width=3.75] (440.94,578.24) -- (440.93,596.5) ;
+    \draw (316.45,598.31) node [anchor=north west][inner sep=0.75pt] [font=\LARGE] [align=left] {{\fontfamily{ptm}\selectfont Université}};
+    \draw (342.26,618.62) node [anchor=north west][inner sep=0.75pt] [font=\LARGE] [align=left] {{\fontfamily{ptm}\selectfont de Montréal}};
+  \end{tikzpicture}
+
+  \vspace{5mm}
+\end{titlepage}
+
+\newpage
+
+{\centering
+  \textit{Répondez aux quatre questions ci-dessous.}\\
+  \textit{Les réponses doivent utiliser une \textbf{notation asymptotique précise (Big-O)}}\\
+  \textit{et être accompagnées d'une justification claire.}
+\par}
+
+\vspace{1.5em}
+
+% =============================================================================
+\section{Q1 — Invariants des structures de données \pts{12}}
+% =============================================================================
+
+Pour chacune des trois structures de données utilisées dans ce projet, définissez
+les \textbf{invariants structurels} (propriétés qui doivent toujours être vraies)
+et expliquez comment les opérations principales maintiennent ces invariants.
+
+\subsection*{1a. Table de fréquences (\jclass{HashMap}) \pts{4}}
+
+\answerspace{10em}
+
+\subsection*{1b. Arbre de préfixes (\jclass{PrefixTrie}) \pts{4}}
+
+\answerspace{10em}
+
+\subsection*{1c. Tas min (\jclass{PriorityQueue}) \pts{4}}
+
+\answerspace{10em}
+
+\newpage
+
+% =============================================================================
+\section{Q2 — Complexité asymptotique de l'entraînement \pts{12}}
+% =============================================================================
+
+Considérez un corpus contenant $N$ tokens. Le vocabulaire a une taille $V$
+($V \leq N$). La longueur moyenne des tokens est supposée constante.
+
+Analysez la complexité de la méthode \texttt{train(List<List<String>> sentences)}
+en décomposant chaque étape.
+
+\textbf{Variables à utiliser :} $N$ (tokens), $V$ (vocabulaire).
+
+\subsection*{2a. Construction de la table de fréquences (\texttt{unigrams}) \pts{4}}
+
+\answerspace{8em}
+
+\subsection*{2b. Construction du trie \pts{4}}
+
+\answerspace{8em}
+
+\subsection*{2c. Construction des tables bigrammes et trigrammes \pts{4}}
+
+\answerspace{8em}
+
+% =============================================================================
+\section{Q3 — Complexité asymptotique des requêtes \pts{10}}
+% =============================================================================
+
+Considérez une requête depuis un modèle déjà entraîné sur un vocabulaire de
+taille $V$. On demande les $k$ meilleures suggestions pour un contexte donné.
+Le préfixe soumis à \texttt{complete} a une longueur $L$.
+
+\textbf{Variables à utiliser :} $V$, $k$, $L$.
+
+\subsection*{3a. \texttt{topK} via la table de fréquences \pts{4}}
+
+\answerspace{8em}
+
+\subsection*{3b. \texttt{complete} via le trie \pts{6}}
+
+\textit{Exprimer la complexité en distinguant la phase de descente au préfixe
+et la phase de DFS + sélection top-$k$.}
+
+\answerspace{10em}
+
+\newpage
+
+% =============================================================================
+\section{Q4 — Comparaison d'implémentations alternatives \pts{6}}
+% =============================================================================
+
+Choisissez \textbf{une} des structures de données utilisées dans ce projet et
+comparez-la à une alternative plausible.
+
+\textit{Exemples : trie vs tableau trié, tas min vs tri complet,}\\
+\textit{table de hachage vs arbre binaire de recherche équilibré.}
+
+Votre réponse doit inclure :
+\begin{itemize}
+  \item une description des deux approches,
+  \item la complexité des opérations principales pour chacune,
+  \item une discussion sur l'utilisation mémoire,
+  \item une conclusion sur le contexte où chaque approche serait préférable.
+\end{itemize}
+
+\answerspace{22em}
+
+% =============================================================================
+\newpage
+\section*{Bibliographie}
+% =============================================================================
+
+Les références doivent être présentées selon le style \textbf{APA}.
+
+\textit{Exemple :}
+
+\begin{itemize}
+  \item Goodrich, M. T., Tamassia, R., \& Goldwasser, M. H. (2014).
+        \textit{Data structures and algorithms in Java} (6e éd.). Wiley.
+\end{itemize}
+
+Ajoutez ci-dessous toutes les sources utilisées :
+
+\vspace{1.5em}
+
+\begin{itemize}
+  \item
+  \item
+  \item
+  \item
+\end{itemize}
+
+\end{document}
