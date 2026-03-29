@@ -31,8 +31,34 @@ public class HeapTopKStrategy implements TopKStrategy {
      *       ordre décroissant final.</li>
      * </ol>
      */
-    @Override
     public List<String> topK(FrequencyTable table, int k) {
-        throw new UnsupportedOperationException("TODO 7 — topK non implémenté");
+
+        if (k <= 0 || table.isEmpty()) {
+            return new LinkedList<>();
+        }
+
+
+        Comparator<String> comp = (a, b) -> {
+            int freqA = table.get(a);
+            int freqB = table.get(b);
+            if (freqA != freqB) return freqA - freqB;
+            return b.compareTo(a);
+        };
+
+
+        PriorityQueue<String> heap = new PriorityQueue<>(comp);
+        for (String token : table.vocabulary()) {
+            heap.offer(token);
+            if (heap.size() > k) {
+                heap.poll();
+            }
+        }
+
+
+        LinkedList<String> result = new LinkedList<>();
+        while (!heap.isEmpty()) {
+            result.addFirst(heap.poll());
+        }
+        return result;
     }
 }
