@@ -31,6 +31,8 @@ public class HeapTopKStrategy implements TopKStrategy {
      *       ordre décroissant final.</li>
      * </ol>
      */
+
+    /*Code*/
     public List<String> topK(FrequencyTable table, int k) {
 
         if (k <= 0 || table.isEmpty()) {
