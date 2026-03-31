@@ -3,6 +3,7 @@ package ca.udem.ift2015.autocompleter.student;
 import ca.udem.ift2015.autocompleter.model.FrequencyTable;
 import ca.udem.ift2015.autocompleter.model.Trie;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,27 @@ public class PrefixTrie implements Trie {
      * à {@code node.frequency}.
      */
     public void insert(String word, int frequency) {
-        throw new UnsupportedOperationException("TODO 8 — insert non implémenté");
+        TrieNode currentNode = this.root;
+        for (int i = 0; i < word.length(); i++) {
+            
+            Character currentChar = word.charAt(i);
+
+           //create element in Trie if not found 
+            if(currentNode.children.get(currentChar) == null){
+                currentNode.children.put(currentChar, new TrieNode());
+                nodeCount++;
+            }
+
+            currentNode = currentNode.children.get(currentChar);
+
+            //end of word
+            if(i == (word.length() - 1)){
+                if(currentNode.frequency == 0)
+                    size++;
+                currentNode.isEndOfWord = true;
+                currentNode.frequency += frequency;
+            }
+        }
     }
 
     /**
@@ -49,7 +70,14 @@ public class PrefixTrie implements Trie {
      * seulement si {@code node.isEndOfWord} est vrai.
      */
     public int search(String word) {
-        throw new UnsupportedOperationException("TODO 9 — search non implémenté");
+        TrieNode current = this.root;
+
+        for (int i = 0; i < word.length(); i++) {
+            current = current.children.get(word.charAt(i));
+            if(current == null)
+                return 0;
+        }
+        return current.isEndOfWord ? current.frequency : 0;
     }
 
     /**
@@ -67,7 +95,20 @@ public class PrefixTrie implements Trie {
      * </ol>
      */
     public List<String> complete(String prefix, int k) {
-        throw new UnsupportedOperationException("TODO 10 — complete non implémenté");
+        List<String> emptyL = new ArrayList<>(); 
+
+        if(k <= 0)
+            return emptyL;
+
+        TrieNode current = this.root;
+        for (int i = 0; i < prefix.length(); i++){
+            current = current.children.get(prefix.charAt(i));
+            if(current == null)
+                return emptyL;
+        }
+        FrequencyTable pft = dfs(current, new StringBuilder(prefix));
+        HeapTopKStrategy topk = new HeapTopKStrategy();
+        return topk.topK(pft, k);
     }
 
     /**
