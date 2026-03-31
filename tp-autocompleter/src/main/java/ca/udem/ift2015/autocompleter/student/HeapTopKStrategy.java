@@ -32,7 +32,7 @@ public class HeapTopKStrategy implements TopKStrategy {
      * </ol>
      */
 
-    /*Code*/
+    /*COde*/
     public List<String> topK(FrequencyTable table, int k) {
 
         if (k <= 0 || table.isEmpty()) {
