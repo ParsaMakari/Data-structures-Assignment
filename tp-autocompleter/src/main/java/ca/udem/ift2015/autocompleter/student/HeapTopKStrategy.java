@@ -36,7 +36,7 @@ public class HeapTopKStrategy implements TopKStrategy {
     public List<String> topK(FrequencyTable table, int k) {
 
         if (k <= 0 || table.isEmpty()) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
 
 
@@ -57,10 +57,11 @@ public class HeapTopKStrategy implements TopKStrategy {
         }
 
 
-        LinkedList<String> result = new LinkedList<>();
+        ArrayList<String> result = new ArrayList<>();
         while (!heap.isEmpty()) {
-            result.addFirst(heap.poll());
+            result.add(heap.poll());
         }
-        return result;
+        
+        return result.reversed();
     }
 }
