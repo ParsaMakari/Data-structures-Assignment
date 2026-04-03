@@ -88,8 +88,8 @@
 
   \vspace{28mm}
   {\large Par\\[6pt]
-  Prénom1 Nom1\\
-  Prénom2 Nom2}
+  Joseph Soufsaf\\
+  Parsa Makari}
 
   \vspace{22mm}
   {\large Présenté à\\[6pt]
@@ -143,10 +143,13 @@ et expliquez comment les opérations principales maintiennent ces invariants.
 \answerspace{10em}
 
 \subsection*{1b. Arbre de préfixes (\jclass{PrefixTrie}) \pts{4}}
+Les invariants structurels d'un arbre de préfixes sont: Une racine unique, un chemin représente un préfixe, les noeuds qui complète un mot sont marqué comme tel. Chaque mot est représenté par un seul chemin. Les opérations n'affectent pas les invariants. La recherche ne modifie rien de l'arbre.
 
 \answerspace{10em}
 
 \subsection*{1c. Tas min (\jclass{PriorityQueue}) \pts{4}}
+Les invariants du min-heap sont: Le parent est toujours plus petit que l'enfat, C'est un arbre complet, La racine est l'élément le plus petit. Tandis que pour ces opérations l'insertion maintient lesinvariants, car il est rajouté à la fin puis remonter en fonction de s'il est plus petit que son enfant. La supression on remplace la racine par le dernier élément et on le fait descendre jusqu'à ce qu'il soit plus petit que son enfant. La recherche ne modifie pas la structure du heap donc l'invariant est maintenu.
+
 
 \answerspace{10em}
 
@@ -165,11 +168,11 @@ en décomposant chaque étape.
 \textbf{Variables à utiliser :} $N$ (tokens), $V$ (vocabulaire).
 
 \subsection*{2a. Construction de la table de fréquences (\texttt{unigrams}) \pts{4}}
-
+On utilise une HashMap pour storer N tokens. Puisque dans une HashMap l'insertion ou la recherche se fait en O(1) pour chaque élément et nous avons N tokens donc la compléxité devrait être de O(N). L'esapce occupé devrait être au maximum de O(V), car dans un HashMap il n'y a pas de duplication d'éléments
 \answerspace{8em}
 
 \subsection*{2b. Construction du trie \pts{4}}
-
+Un trie va passer à travers chaque lettre du mot pendant son insertion donc si un mot à une longeur moyenne de M et nous avons N tokens alors l'arbre va prendre O(N x M) pour être construit. Le trie va prendre O(M x V) espace, car on va storer chaque lettre pour chaque token unique.
 \answerspace{8em}
 
 \subsection*{2c. Construction des tables bigrammes et trigrammes \pts{4}}
@@ -187,6 +190,7 @@ Le préfixe soumis à \texttt{complete} a une longueur $L$.
 \textbf{Variables à utiliser :} $V$, $k$, $L$.
 
 \subsection*{3a. \texttt{topK} via la table de fréquences \pts{4}}
+On parcourt V éléments et toutes opérations sur un topK prend environ O(log k) donc la compléxité devrait être de O(V x log(k))
 
 \answerspace{8em}
 
@@ -194,7 +198,8 @@ Le préfixe soumis à \texttt{complete} a une longueur $L$.
 
 \textit{Exprimer la complexité en distinguant la phase de descente au préfixe
 et la phase de DFS + sélection top-$k$.}
-
+\newline
+On doit descendre l'arbre caractère par caractère et nous avons à peu près L caractères ensuite on fait un parcours DFS pour trouver les mots désirés qui peut prendre au plus N et on mets les valeurs souhaités dans un top k ce qui donne une compléxité de O(L + log(k))
 \answerspace{10em}
 
 \newpage
