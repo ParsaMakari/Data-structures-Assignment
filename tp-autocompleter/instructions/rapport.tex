@@ -140,18 +140,60 @@ et expliquez comment les opérations principales maintiennent ces invariants.
 
 \subsection*{1a. Table de fréquences (\jclass{HashMap}) \pts{4}}
 
-\answerspace{10em}
+\textbf{Invariants structurels :}
+\begin{itemize}
+  \item Les données sont stockées en paires \texttt{<clé, valeur>}, où la valeur est la fréquence de la clé
+  \item Clés uniques (invariant d'une Map)
+  \item Valeurs (fréquences) positives
+  \item Insertion et accès aux éléments du tableau selon l'algorithme de hachage
+  \item Gestion des collisions entre deux clés par une des méthodes possibles du HashMap
+\end{itemize}
+
+\textbf{Maintenance des invariants :}
+\begin{itemize}
+  \item Insertion/mise à jour → préserve unicité des clés (si la clé existe on augmente sa fréquence, sinon on ajoute la clé avec fréquence = 1)
+  \item Suppression → décrémente et supprime si fréquence = 0, évite les valeurs négatives
+  \item Accès → lecture seule, tous les invariants demeurent inchangés
+  \item Hachage → résout les collisions, maintient l'intégrité de la structure
+\end{itemize}
+
+\answerspace{6em}
 
 \subsection*{1b. Arbre de préfixes (\jclass{PrefixTrie}) \pts{4}}
-Les invariants structurels d'un arbre de préfixes sont: Une racine unique, un chemin représente un préfixe, les noeuds qui complète un mot sont marqué comme tel. Chaque mot est représenté par un seul chemin. Les opérations n'affectent pas les invariants. La recherche ne modifie pas la structure de l'arbre.
 
-\answerspace{10em}
+\textbf{Invariants structurels :}
+\begin{itemize}
+  \item Une racine unique
+  \item Un chemin représente un préfixe
+  \item Les nœuds qui complètent un mot sont marqués comme tels
+  \item Chaque mot est représenté par un seul chemin unique
+\end{itemize}
+
+\textbf{Maintenance des invariants :}
+\begin{itemize}
+  \item Les opérations d'insertion, suppression et recherche n'affectent pas les invariants
+  \item La recherche ne modifie pas la structure de l'arbre
+\end{itemize}
+
+\answerspace{8em}
 
 \subsection*{1c. Tas min (\jclass{PriorityQueue}) \pts{4}}
-Les invariants du min-heap sont: Le parent est toujours plus petit que l'enfat, C'est un arbre complet, La racine est l'élément le plus petit. Tandis que pour ces opérations l'insertion maintient lesinvariants, car il est rajouté à la fin puis remonter en fonction de s'il est plus petit que son enfant. La supression on remplace la racine par le dernier élément et on le fait descendre jusqu'à ce qu'il soit plus petit que son enfant. La recherche ne modifie pas la structure du heap donc l'invariant est maintenu.
 
+\textbf{Invariants du min-heap :}
+\begin{itemize}
+  \item Le parent est toujours plus petit que ses enfants
+  \item C'est un arbre complet (rempli de gauche à droite)
+  \item La racine est l'élément le plus petit
+\end{itemize}
 
-\answerspace{10em}
+\textbf{Maintenance des invariants :}
+\begin{itemize}
+  \item \textbf{Insertion :} L'élément est ajouté à la fin, puis remonté (\textit{sift-up}) si plus petit que son parent
+  \item \textbf{Suppression :} La racine est remplacée par le dernier élément et descendue (\textit{sift-down}) jusqu'à satisfaire la propriété de min-heap
+  \item \textbf{Recherche :} Ne modifie pas la structure du heap, donc l'invariant est maintenu
+\end{itemize}
+
+\answerspace{8em}
 
 \newpage
 
@@ -168,16 +210,40 @@ en décomposant chaque étape.
 \textbf{Variables à utiliser :} $N$ (tokens), $V$ (vocabulaire).
 
 \subsection*{2a. Construction de la table de fréquences (\texttt{unigrams}) \pts{4}}
-On utilise une HashMap pour storer N tokens. Puisque dans une HashMap l'insertion ou la recherche se fait en O(1) pour chaque élément et nous avons N tokens donc la compléxité devrait être de O(N). L'esapce occupé devrait être au maximum de O(V), car dans un HashMap il n'y a pas de duplication d'éléments
-\answerspace{8em}
+
+On utilise une HashMap pour stocker $N$ tokens.
+
+\textbf{Complexité temporelle :} Puisque dans une HashMap, l'insertion ou la recherche se fait en $\mathcal{O}(1)$ pour chaque élément, et nous avons $N$ tokens, la complexité est \bigo{N}.
+
+\textbf{Complexité spatiale :} L'espace occupé est au maximum $\mathcal{O}(V)$, car dans une HashMap il n'y a pas de duplication d'éléments. Au pire cas, chaque token unique occupe une entrée.
+
+\answerspace{6em}
 
 \subsection*{2b. Construction du trie \pts{4}}
-Un trie va passer à travers chaque lettre du mot pendant son insertion donc si un mot à une longeur moyenne de M et nous avons N tokens alors l'arbre va prendre O(N x M) pour être construit. Le trie va prendre O(M x V) espace, car on va storer chaque lettre pour chaque token unique.
-\answerspace{8em}
+
+Un trie doit passer à travers chaque lettre du mot pendant son insertion.
+
+\textbf{Complexité temporelle :} Si un mot a une longueur moyenne de $M$ (supposée constante) et nous avons $N$ tokens, l'arbre prend $\mathcal{O}(N \times M) = \mathcal{O}(N)$ pour être construit (puisque $M$ est constant).
+
+\textbf{Complexité spatiale :} Le trie prend $\mathcal{O}(M \times V) = \mathcal{O}(V)$ espace, car on stocke chaque lettre pour chaque token unique.
+
+\answerspace{6em}
 
 \subsection*{2c. Construction des tables bigrammes et trigrammes \pts{4}}
 
-\answerspace{8em}
+On utilise une HashMap pour stocker des paires (bigrammes) et des triplets (trigrammes) de tokens.
+
+\textbf{Nombre d'éléments :} Avec $N$ tokens, il y a $N-1$ paires et $N-2$ triplets à traiter.
+
+\textbf{Complexité temporelle :} L'insertion et la recherche en HashMap se font en $\mathcal{O}(1)$. Pour $N-1$ et $N-2$ éléments, la complexité asymptotique est $\mathcal{O}(N)$.
+
+\textbf{Complexité spatiale :} 
+\begin{itemize}
+  \item Bigrammes : $\min(\mathcal{O}(V^2), \mathcal{O}(N))$ (le minimum entre le nombre maximum de combinaisons de $V$ mots et la longueur du corpus)
+  \item Trigrammes : $\min(\mathcal{O}(V^3), \mathcal{O}(N))$
+\end{itemize}
+
+\answerspace{6em}
 
 % =============================================================================
 \section{Q3 — Complexité asymptotique des requêtes \pts{10}}
@@ -190,17 +256,38 @@ Le préfixe soumis à \texttt{complete} a une longueur $L$.
 \textbf{Variables à utiliser :} $V$, $k$, $L$.
 
 \subsection*{3a. \texttt{topK} via la table de fréquences \pts{4}}
-On parcourt V éléments et toutes opérations sur un topK prend environ O(log k) donc la compléxité devrait être de O(V x log(k))
 
-\answerspace{8em}
+\textbf{Phase 1 — Parcours :} On doit parcourir tous les mots de la table pour trouver ceux ayant le préfixe, ce qui prend $\mathcal{O}(V)$.
+
+\textbf{Phase 2 — Sélection du top-$K$ :} On utilise un min-heap des fréquences avec taille maximale $K$. Pour chacun des $V$ mots :
+\begin{itemize}
+  \item Si le heap n'est pas plein : insertion en $\mathcal{O}(\log K)$
+  \item Si le heap est plein et le mot a une meilleure fréquence que la racine : suppression + insertion en $\mathcal{O}(\log K)$
+  \item Sinon : on passe
+\end{itemize}
+
+Cette phase coûte $\mathcal{O}(V \log K)$ au pire cas.
+
+\textbf{Complexité totale :}
+$$\mathcal{O}(V) + \mathcal{O}(V \log K) = \mathcal{O}(V \log K)$$
+
+\answerspace{6em}
 
 \subsection*{3b. \texttt{complete} via le trie \pts{6}}
 
 \textit{Exprimer la complexité en distinguant la phase de descente au préfixe
 et la phase de DFS + sélection top-$k$.}
-\newline
-On doit descendre l'arbre caractère par caractère et nous avons à peu près L caractères ensuite on fait un parcours DFS pour trouver les mots désirés qui peut prendre au plus N et on mets les valeurs souhaités dans un top k ce qui donne une compléxité de O(L + log(k))
-\answerspace{10em}
+
+\textbf{Phase 1 — Descente au préfixe :} On parcourt les $L$ nœuds du trie correspondant au préfixe, ce qui prend $\mathcal{O}(L)$.
+
+\textbf{Phase 2 — DFS pour récupérer tous les mots :} On utilise une recherche DFS à partir du nœud final du préfixe pour trouver tous les mots qui incluent ce préfixe. Au pire cas, on explore tout le sous-arbre du trie, ce qui est $\mathcal{O}(N)$ (tous les nœuds).
+
+\textbf{Phase 3 — Sélection du top-$K$ :} On emploie la même stratégie qu'en 3a pour gérer les top-$K$, ce qui coûte $\mathcal{O}(V \log k)$.
+
+\textbf{Complexité totale :}
+$$\mathcal{O}(L) + \mathcal{O}(N) + \mathcal{O}(V \log k) = \mathcal{O}(L + N + V \log k)$$
+
+\answerspace{8em}
 
 \newpage
 
@@ -217,12 +304,27 @@ comparez-la à une alternative plausible.
 Votre réponse doit inclure :
 \begin{itemize}
   \item une description des deux approches,
-  \item la complexité des opérations principales pour chacune,
+  \item la complexité des opérations principales pour chacu:ne,
   \item une discussion sur l'utilisation mémoire,
   \item une conclusion sur le contexte où chaque approche serait préférable.
 \end{itemize}
 
-\answerspace{22em}
+
+\textbf{Comparaison HashMap vs. ABR Équilibré :}
+
+Si on avait décidé d'employer un arbre binaire de recherche au lieu d'un HashMap pour l'implémentation de notre table de fréquences, voici ce qui changerait :
+
+En supposant que nous conservons les mots comme clés et les fréquences comme valeurs :
+
+L'insertion, l'accès et la suppression deviendraient en $\mathcal{O}(\log V)$ au lieu de $\mathcal{O}(1)$.
+
+Cependant, puisque l'ABR impose un ordre total, on peut trouver le premier mot avec un préfixe en $\mathcal{O}(\log V)$, puis parcourir pour trouver tous les mots avec ce préfixe (pour $s$ mots : $\mathcal{O}(\log V + s)$).
+
+Ainsi, on obtient les avantages d'une map ordonnée pour les requêtes par intervalle :
+
+Cela est intéressant si les requêtes par préfixe et parcours ordered sont fréquents. Mais pour des insertions/accès fréquents, le HashMap demeure meilleur car il offre $\mathcal{O}(1)$ vs $\mathcal{O}(\log V)$. \\[6pt]
+\textbf{Recommandation :} En autocomplétion, le HashMap est préférable car le trie gère déjà les requêtes par préfixe efficacement.
+\answerspace{12em}
 
 % =============================================================================
 \newpage
